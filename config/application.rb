@@ -11,6 +11,8 @@ require "action_view/railtie"
 require "action_cable/engine"
 require "sprockets/railtie"
 require "bcrypt"
+require 'rack/cors'
+
 # require "rails/test_unit/railtie"
 
 # Require the gems listed in Gemfile, including any gems
@@ -28,5 +30,14 @@ module SchmokemonRails
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    Rails.application.config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins 'localhost:3000'
+        resource '*',
+          headers: :any,
+          methods: %i(get post put patch delete options head)
+      end
+    end
   end
 end
